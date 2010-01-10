@@ -3,25 +3,26 @@ package Bootylicious::Plugin::I18n;
 use strict;
 use warnings;
 
-use base 'Mojo::Base';
+use base 'Mojolicious::Plugin';
 
 use MojoX::Locale::Maketext;
 use POSIX qw(locale_h);
 
-__PACKAGE__->attr(languages => 'en');
-__PACKAGE__->attr(helper    => 'loc');
+our $VERSION = '0.990201';
 
-our $VERSION = '0.990101';
+sub register {
+    my ($self, $app, $args) = @_;
 
-sub hook_init {
-    my $self = shift;
-    my $app  = shift;
+    $args ||= {};
+
+    $args->{languages} ||= 'en';
+    $args->{helper}    ||= 'loc';
 
     my $i18n = MojoX::Locale::Maketext->new;
 
     $i18n->setup(namespace => 'Bootylicious::Plugin', subclass => 'I18N');
 
-    my $languages = $self->languages;
+    my $languages = $args->{languages};
     $languages = [$languages] unless ref($languages) eq 'ARRAY';
 
     $i18n->languages($languages);
@@ -37,7 +38,7 @@ sub hook_init {
     main::config(strings => $strings);
 
     $app->renderer->add_helper(
-        $self->helper => sub {
+        $args->{helper} => sub {
             my $c = shift;
 
             return $i18n->localize(@_);

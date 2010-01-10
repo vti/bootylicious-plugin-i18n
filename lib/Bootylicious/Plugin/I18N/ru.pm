@@ -12,6 +12,8 @@ our %Lexicon = (
     'Archive' => 'Архив',
     'Tags'    => 'Теги',
     'Tag'     => 'Тег',
+    'Later'   => 'Позже',
+    'Earlier' => 'Раньше',
     'Internal error occuried :(' =>
       'Возникла внутренняя ошибка :(',
     'The page you are looking for was not found' =>
